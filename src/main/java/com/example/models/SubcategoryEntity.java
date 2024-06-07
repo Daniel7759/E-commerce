@@ -1,5 +1,9 @@
 package com.example.models;
 
+import com.example.repositories.Identifable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +19,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubcategoryEntity implements Serializable {
+public class SubcategoryEntity implements Serializable, Identifable<Long> {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -28,5 +32,11 @@ public class SubcategoryEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", referencedColumnName = "categoryId", nullable = false)
+    @JsonIgnore
     private CategoryEntity category;
+
+    @Override
+    public Long getId() {
+        return subcategoryId;
+    }
 }
