@@ -1,5 +1,6 @@
 package com.example.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "marcas")
@@ -25,6 +27,12 @@ public class MarcaEntity implements Serializable {
     private Long marcaId;
     private String name;
     private String country;
+
+    @Column(name = "logo", columnDefinition = "TEXT")
     private String logo;
+
+    @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ProductEntity> products;
 
 }

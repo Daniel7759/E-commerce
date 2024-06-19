@@ -1,9 +1,7 @@
 package com.example.models;
 
 import com.example.repositories.Identifable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +11,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -37,15 +36,20 @@ public class ProductEntity implements Serializable, Identifable<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "marca_id", referencedColumnName = "marcaId", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private MarcaEntity marca;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subcategory_id", referencedColumnName = "subcategoryId", nullable = false)
-    @JsonIgnore
+    @JsonBackReference
     private SubcategoryEntity subcategory;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ImageProductEntity> images;
+
     @Override
+    @JsonIgnore
     public Long getId() {
         return productId;
     }
