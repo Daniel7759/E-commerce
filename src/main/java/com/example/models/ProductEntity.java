@@ -36,12 +36,12 @@ public class ProductEntity implements Serializable, Identifable<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "marca_id", referencedColumnName = "marcaId", nullable = false)
-    @JsonIgnoreProperties
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private MarcaEntity marca;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "subcategory_id", referencedColumnName = "subcategoryId", nullable = false)
-    @JsonIgnoreProperties
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private SubcategoryEntity subcategory;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
