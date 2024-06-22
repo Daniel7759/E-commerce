@@ -3,6 +3,7 @@ package com.example.models;
 import com.example.repositories.Identifable;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class SubcategoryEntity implements Serializable, Identifable<Long> {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "category_id", referencedColumnName = "categoryId", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties
     private CategoryEntity category;
 
 

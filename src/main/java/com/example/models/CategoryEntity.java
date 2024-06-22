@@ -28,8 +28,4 @@ public class CategoryEntity implements Serializable {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<SubcategoryEntity> subcategories;
-
 }

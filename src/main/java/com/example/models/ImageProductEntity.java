@@ -28,7 +28,7 @@ public class ImageProductEntity implements Serializable {
     @Column(name = "image_url", columnDefinition = "TEXT")
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "product_id", referencedColumnName = "productId", nullable = false)
     @JsonBackReference
     private ProductEntity product;
