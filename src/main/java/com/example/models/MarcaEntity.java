@@ -31,8 +31,4 @@ public class MarcaEntity implements Serializable {
     @Column(name = "logo", columnDefinition = "TEXT")
     private String logo;
 
-    @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<ProductEntity> products;
-
 }

@@ -36,9 +36,6 @@ public class SubcategoryEntity implements Serializable, Identifable<Long> {
     @JsonBackReference
     private CategoryEntity category;
 
-    @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<ProductEntity> products;
 
     @Override
     @JsonIgnore
