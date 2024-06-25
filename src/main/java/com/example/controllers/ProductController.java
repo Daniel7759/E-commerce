@@ -4,10 +4,7 @@ import com.example.models.ProductEntity;
 import com.example.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/products")
@@ -48,5 +45,14 @@ public class ProductController {
     @GetMapping("/subcategory/name/{subcategoryName}")
     public ResponseEntity<?> findProductsBySubcategoryName(@PathVariable(value = "subcategoryName") String subcategoryName) {
         return ResponseEntity.ok(productService.findBySubcategoryName(subcategoryName));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<?> filterProducts(
+            @RequestParam(required = false) Long subcategoryId,
+            @RequestParam(required = false) Long marcaId,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice) {
+        return ResponseEntity.ok(productService.filterProducts(subcategoryId, marcaId, minPrice, maxPrice));
     }
 }
