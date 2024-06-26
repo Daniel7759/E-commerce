@@ -49,10 +49,10 @@ public class ProductController {
 
     @GetMapping("/filter")
     public ResponseEntity<?> filterProducts(
-            @RequestParam(required = false) Long subcategoryId,
-            @RequestParam(required = false) Long marcaId,
+            @RequestParam(required = false) String subcategoryName,
+            @RequestParam(required = false) String marcaName,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice) {
-        return ResponseEntity.ok(productService.filterProducts(subcategoryId, marcaId, minPrice, maxPrice));
+        return ResponseEntity.ok(productService.filterProducts(subcategoryName, marcaName, minPrice, maxPrice));
     }
 }

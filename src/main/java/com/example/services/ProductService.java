@@ -47,7 +47,7 @@ public class ProductService extends GenericServicesImpl<ProductEntity, Long, Pro
     }
 
     //Metodo para filtrar con Criteria API
-    public List<ProductEntity> filterProducts(Long subcategoryId, Long marcaId, Double minPrice, Double maxPrice) {
+    public List<ProductEntity> filterProducts(String subcategoryName, String marcaName, Double minPrice, Double maxPrice) {
         // Inicializa la consulta
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<ProductEntity> cq = cb.createQuery(ProductEntity.class);
@@ -59,11 +59,11 @@ public class ProductService extends GenericServicesImpl<ProductEntity, Long, Pro
         List<Predicate> predicates = new ArrayList<>();
 
         // Agrega condiciones en función de los parámetros presentes
-        if (subcategoryId != null) {
-            predicates.add(cb.equal(product.get("subcategory").get("subcategoryId"), subcategoryId));
+        if (subcategoryName != null) {
+            predicates.add(cb.equal(product.get("subcategory").get("name"), subcategoryName));
         }
-        if (marcaId != null) {
-            predicates.add(cb.equal(product.get("marca").get("marcaId"), marcaId));
+        if (marcaName != null) {
+            predicates.add(cb.equal(product.get("marca").get("name"), marcaName));
         }
         if (minPrice != null) {
             predicates.add(cb.greaterThanOrEqualTo(product.get("price"), minPrice));
