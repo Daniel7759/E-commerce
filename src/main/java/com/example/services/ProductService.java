@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,23 @@ public class ProductService extends GenericServicesImpl<ProductEntity, Long, Pro
 
     public ProductService(ProductRepository repository) {
         super(repository);
+    }
+
+    @Transactional
+    public ProductEntity findById(Long id) {
+        ProductEntity product = repository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException(ProductEntity.class.getSimpleName()+" not found with id "+id));
+        if (product.getViews() == null) {
+            product.setViews(1L);
+        } else {
+            product.setViews(product.getViews() + 1);
+        }
+        return repository.save(product);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProductEntity> finTop5Views(){
+        return repository.findTop5ByViewsNotNullOrderByViewsDesc(PageRequest.of(0, 5));
     }
 
     @Transactional(readOnly = true)

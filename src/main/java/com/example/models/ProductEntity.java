@@ -48,6 +48,9 @@ public class ProductEntity implements Serializable, Identifable<Long> {
     @JsonManagedReference
     private List<ImageProductEntity> images;
 
+    @JsonIgnore
+    private Long views = 0L;
+
     @Override
     @JsonIgnore
     public Long getId() {

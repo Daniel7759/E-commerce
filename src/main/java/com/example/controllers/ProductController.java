@@ -24,7 +24,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findProductById(@PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(productService.findById(id, ProductEntity.class));
+        return ResponseEntity.ok(productService.findById(id));
     }
 
     @GetMapping("/name/{name}")
@@ -54,5 +54,10 @@ public class ProductController {
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice) {
         return ResponseEntity.ok(productService.filterProducts(subcategoryName, marcaName, minPrice, maxPrice));
+    }
+
+    @GetMapping("/top-views")
+    public ResponseEntity<?> findTop5Views() {
+        return ResponseEntity.ok(productService.finTop5Views());
     }
 }
