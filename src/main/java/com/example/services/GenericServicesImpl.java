@@ -2,6 +2,7 @@ package com.example.services;
 
 import com.example.exceptions.ResourceNotFoundException;
 import com.example.repositories.Identifable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,6 +54,6 @@ public class GenericServicesImpl<T, ID, R extends JpaRepository<T, ID>> implemen
     @Override
     @Transactional(readOnly = true)
     public List<T> findAll() {
-        return repository.findAll();
+        return repository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 }
