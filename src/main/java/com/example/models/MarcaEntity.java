@@ -1,5 +1,7 @@
 package com.example.models;
 
+import com.example.repositories.Identifable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +19,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MarcaEntity implements Serializable {
+public class MarcaEntity implements Serializable, Identifable<Long> {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -31,4 +33,9 @@ public class MarcaEntity implements Serializable {
     @Column(name = "logo", columnDefinition = "TEXT")
     private String logo;
 
+    @Override
+    @JsonIgnore
+    public Long getId() {
+        return marcaId;
+    }
 }
