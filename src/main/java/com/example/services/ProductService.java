@@ -93,6 +93,9 @@ public class ProductService extends GenericServicesImpl<ProductEntity, Long, Pro
         // Aplica las condiciones a la consulta
         cq.where(predicates.toArray(new Predicate[0]));
 
+        // Ordena los resultados por Id de orden ascendente
+        cq.orderBy(cb.asc(product.get("productId")));
+
         // Ejecuta la consulta y devuelve los resultados
         return entityManager.createQuery(cq).getResultList();
     }
