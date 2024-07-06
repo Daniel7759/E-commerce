@@ -28,6 +28,10 @@ public class SecurityConfig{
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> {
+                    authz.requestMatchers("/products/**").permitAll();
+                    authz.requestMatchers("/marcas/**").permitAll();
+                    authz.requestMatchers("/categories/**").permitAll();
+                    authz.requestMatchers("/subcategories/**").permitAll();
                     authz.requestMatchers("/users/**").permitAll();
                     authz.requestMatchers("/products").hasAuthority("ROLE_USER");
                     authz.anyRequest().authenticated();
