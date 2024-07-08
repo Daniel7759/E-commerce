@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -49,11 +51,11 @@ public class ProductController {
 
     @GetMapping("/filter")
     public ResponseEntity<?> filterProducts(
-            @RequestParam(required = false) String subcategoryName,
-            @RequestParam(required = false) String marcaName,
+            @RequestParam(required = false) List<String> subcategoryNames,
+            @RequestParam(required = false) List<String> marcaNames,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice) {
-        return ResponseEntity.ok(productService.filterProducts(subcategoryName, marcaName, minPrice, maxPrice));
+        return ResponseEntity.ok(productService.filterProducts(subcategoryNames, marcaNames, minPrice, maxPrice));
     }
 
     @GetMapping("/top-views")
