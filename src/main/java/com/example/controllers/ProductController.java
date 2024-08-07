@@ -1,10 +1,11 @@
 package com.example.controllers;
 
-import com.example.models.ProductEntity;
 import com.example.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -61,5 +62,22 @@ public class ProductController {
     @GetMapping("/top-views")
     public ResponseEntity<?> findTop5Views() {
         return ResponseEntity.ok(productService.finTop5Views());
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createProductWithImages(
+            @RequestParam String name,
+            @RequestParam String description,
+            @RequestParam Double price,
+            @RequestParam Integer stock,
+            @RequestParam Long marcaId,
+            @RequestParam Long subcategoryId,
+            @RequestParam List<MultipartFile> images) {
+        try {
+            productService.insert(name, description, price, stock, marcaId, subcategoryId, images);
+            return ResponseEntity.ok("Product created");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

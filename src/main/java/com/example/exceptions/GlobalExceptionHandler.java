@@ -12,4 +12,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> resourceNotFound(ResourceNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(EmailAlreadyExist.class)
+    public ResponseEntity<?> emailAlreadyRegistered(EmailAlreadyExist ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

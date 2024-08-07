@@ -1,8 +1,12 @@
 package com.example.services;
 
 import com.example.exceptions.ResourceNotFoundException;
+import com.example.models.MarcaEntity;
 import com.example.models.ProductEntity;
+import com.example.models.SubcategoryEntity;
+import com.example.repositories.MarcaRepository;
 import com.example.repositories.ProductRepository;
+import com.example.repositories.SubcategoryRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -12,7 +16,9 @@ import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +28,43 @@ public class ProductService extends GenericServicesImpl<ProductEntity, Long, Pro
     @PersistenceContext
     private EntityManager entityManager;
 
-    public ProductService(ProductRepository repository) {
+    private final ImageProductService imageProductService;
+    private final MarcaRepository marcaRepository;
+    private final SubcategoryRepository subcategoryRepository;
+
+    public ProductService(ProductRepository repository, ImageProductService imageProductService, MarcaRepository marcaRepository, SubcategoryRepository subcategoryRepository) {
         super(repository);
+        this.imageProductService = imageProductService;
+        this.marcaRepository = marcaRepository;
+        this.subcategoryRepository = subcategoryRepository;
+    }
+
+    @Transactional
+    public ProductEntity insert(String productName, String description, Double price, Integer stock, Long marcaId, Long subcategoryId, List<MultipartFile> imagenes) throws Exception {
+        ProductEntity existingProductName = repository.findByName(productName).orElse(null);
+        if (existingProductName != null) {
+            throw new Exception("Product with name "+productName+" already exists");
+        }
+        ProductEntity newProduct = new ProductEntity();
+        newProduct.setSku("SKU"+(repository.count()+1));
+        newProduct.setName(productName);
+        newProduct.setDescription(description);
+        newProduct.setPrice(price);
+        newProduct.setStock(stock);
+        newProduct.setCreatedAt(LocalDate.now());
+        MarcaEntity marca = marcaRepository.findById(marcaId)
+                .orElseThrow(()-> new ResourceNotFoundException(MarcaEntity.class.getSimpleName()+" not found with id "+marcaId));
+        newProduct.setMarca(marca);
+        SubcategoryEntity subcategory = subcategoryRepository.findById(subcategoryId)
+                .orElseThrow(()-> new ResourceNotFoundException(SubcategoryEntity.class.getSimpleName()+" not found with id "+subcategoryId));
+        newProduct.setSubcategory(subcategory);
+        repository.save(newProduct);
+
+        for (MultipartFile imagen:imagenes){
+            imageProductService.saveImageProduct(imagen, newProduct.getProductId());
+        }
+
+        return newProduct;
     }
 
     @Transactional

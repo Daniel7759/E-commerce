@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.exceptions.EmailAlreadyExist;
 import com.example.models.RoleEntity;
 import com.example.models.UsuarioEntity;
 import com.example.repositories.RoleRepository;
@@ -41,7 +42,13 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody UsuarioEntity usuario){
-        return ResponseEntity.ok(usuarioService.insert(usuario));
+        try {
+            usuarioService.insert(usuario);
+            return ResponseEntity.ok("Usuario creado con éxito");
+        }catch (EmailAlreadyExist e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @PostMapping("/login")

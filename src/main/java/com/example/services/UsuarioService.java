@@ -1,5 +1,6 @@
 package com.example.services;
 
+import com.example.exceptions.EmailAlreadyExist;
 import com.example.models.RoleEntity;
 import com.example.models.RoleEnum;
 import com.example.models.UsuarioEntity;
@@ -30,6 +31,9 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioEntity insert(UsuarioEntity usuario) {
+        if (findByEmail(usuario.getEmail()).isPresent()) {
+            throw new EmailAlreadyExist("El email " + usuario.getEmail() + " ya está registrado.");
+        }
         encodePassword(usuario);
         assignUsuarioRole(usuario);
         return usuarioRepository.save(usuario);
@@ -52,15 +56,14 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioEntity login(String email, String password) {
-        Optional<UsuarioEntity> userOptional = usuarioRepository.findByEmail(email);
-        if (!userOptional.isPresent()) {
+        UsuarioEntity userExisting = findByEmail(email).orElse(null);
+        if (userExisting == null) {
             throw new UsernameNotFoundException("El email " + email + " no está registrado.");
         }
-        UsuarioEntity user = userOptional.get();
-        if (!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, userExisting.getPassword())) {
             throw new BadCredentialsException("Contraseña incorrecta.");
         }
-        return user;
+        return userExisting;
     }
 
 
