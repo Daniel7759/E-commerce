@@ -4,7 +4,6 @@ import com.example.models.ImageProductEntity;
 import com.example.models.ProductEntity;
 import com.example.repositories.ImageProductRepository;
 import com.example.repositories.ProductRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.StorageClient;
