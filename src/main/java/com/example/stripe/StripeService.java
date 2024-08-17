@@ -9,18 +9,27 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class StripeService {
 
+    private final String stripeApiKey = System.getenv("STRIPE_API_KEY");
     private final ProductRepository productRepository;
     private final OrderSaleRepository orderSaleRepository;
 
     public StripeService(ProductRepository productRepository, OrderSaleRepository orderSaleRepository) {
         this.productRepository = productRepository;
         this.orderSaleRepository = orderSaleRepository;
+
+    }
+
+    @PostConstruct
+    public void init() {
+        com.stripe.Stripe.apiKey = stripeApiKey;
+        System.out.println("Stripe API Key initialized: " + com.stripe.Stripe.apiKey); // Debugging line
     }
 
     public CheckoutSessionResponse createCheckoutSession(
