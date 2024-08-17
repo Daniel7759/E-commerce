@@ -26,12 +26,12 @@ public class CheckoutController {
 
 
     @PostMapping("/create-session")
-    public ResponseEntity<CheckoutSessionResponse> createCheckoutSession(@RequestParam List<Long> productIds, @RequestParam List<Long> quantitys) {
+    public ResponseEntity<?> createCheckoutSession(@RequestParam List<Long> productIds, @RequestParam List<Long> quantitys) {
         try {
             CheckoutSessionResponse session = stripeService.createCheckoutSession(productIds, quantitys);
             return ResponseEntity.ok(session);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
