@@ -35,6 +35,7 @@ public class SecurityConfig{
                     authz.requestMatchers("/users/**").permitAll();
                     authz.requestMatchers("/products").hasAuthority("ROLE_USER");
                     authz.requestMatchers(("/image-products/**")).permitAll();
+                    authz.requestMatchers("/api/checkout/**").permitAll();
                     authz.anyRequest().authenticated();
                 })
 
