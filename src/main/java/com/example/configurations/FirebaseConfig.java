@@ -3,21 +3,14 @@ package com.example.configurations;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 @Configuration
 public class FirebaseConfig {
-
-    /*@Value("${firebase.config.path}")
-    private String firebaseConfigPath;*/
 
     @Bean
     public FirebaseApp initializeFirebase() {
@@ -28,25 +21,25 @@ public class FirebaseConfig {
                     .build();
             return FirebaseApp.initializeApp(options);
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException("Failed to initialize Firebase", e);
         }
     }
 
     private InputStream getFirebaseConfig() {
         String firebaseConfig = String.format(
-                "{\n" +
-                        "  \"type\": \"%s\",\n" +
-                        "  \"project_id\": \"%s\",\n" +
-                        "  \"private_key_id\": \"%s\",\n" +
-                        "  \"private_key\": \"%s\",\n" +
-                        "  \"client_email\": \"%s\",\n" +
-                        "  \"client_id\": \"%s\",\n" +
-                        "  \"auth_uri\": \"%s\",\n" +
-                        "  \"token_uri\": \"%s\",\n" +
-                        "  \"auth_provider_x509_cert_url\": \"%s\",\n" +
-                        "  \"client_x509_cert_url\": \"%s\"\n" +
-                        "}",
+                """
+                        {
+                          "type": "%s",
+                          "project_id": "%s",
+                          "private_key_id": "%s",
+                          "private_key": "%s",
+                          "client_email": "%s",
+                          "client_id": "%s",
+                          "auth_uri": "%s",
+                          "token_uri": "%s",
+                          "auth_provider_x509_cert_url": "%s",
+                          "client_x509_cert_url": "%s"
+                        }""",
                 System.getenv("TYPE"),
                 System.getenv("PROJECT_ID"),
                 System.getenv("PRIVATE_KEY_ID"),

@@ -68,8 +68,8 @@ public class ProductController {
     public ResponseEntity<?> createProductWithImages(
             @RequestParam String name,
             @RequestParam String description,
-            @RequestParam Double price,
-            @RequestParam Integer stock,
+            @RequestParam Long price,
+            @RequestParam Long stock,
             @RequestParam Long marcaId,
             @RequestParam Long subcategoryId,
             @RequestParam List<MultipartFile> images) {

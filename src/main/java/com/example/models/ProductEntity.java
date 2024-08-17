@@ -30,8 +30,8 @@ public class ProductEntity implements Serializable, Identifable<Long> {
     private String sku;
     private String name;
     private String description;
-    private Double price;
-    private Integer stock;
+    private Long price;
+    private Long stock;
     private LocalDate createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

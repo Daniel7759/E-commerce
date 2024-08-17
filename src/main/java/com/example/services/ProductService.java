@@ -40,7 +40,7 @@ public class ProductService extends GenericServicesImpl<ProductEntity, Long, Pro
     }
 
     @Transactional
-    public ProductEntity insert(String productName, String description, Double price, Integer stock, Long marcaId, Long subcategoryId, List<MultipartFile> imagenes) throws Exception {
+    public ProductEntity insert(String productName, String description, Long price, Long stock, Long marcaId, Long subcategoryId, List<MultipartFile> imagenes) throws Exception {
         ProductEntity existingProductName = repository.findByName(productName).orElse(null);
         if (existingProductName != null) {
             throw new Exception("Product with name "+productName+" already exists");
